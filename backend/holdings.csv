@@ -1,0 +1,6 @@
+symbol,quantity,avg_price,current_price,sector
+TCS,10,3400,3800,IT
+INFY,20,1200,1450,IT
+HDFCBANK,15,1500,1650,Banking
+RELIANCE,8,2500,2600,Energy
+DIVISLAB,5,3600,3550,Pharma
