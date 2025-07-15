@@ -10,6 +10,9 @@ function App() {
 
     try {
       const res = await fetch("http://localhost:8000/ask-ai");
+      if (!res.ok) {
+        throw new Error(`Server responded with status ${res.status}`);
+      }
       const data = await res.json();
 
       let raw = data.response;
@@ -22,7 +25,10 @@ function App() {
       const parsed = JSON.parse(raw);
       setResponse(parsed);
     } catch (err) {
-      alert("Error connecting to backend.");
+      setResponse({
+        observations: [],
+        suggestions: [`Error: ${err.message}`],
+      });
       console.error("Parsing or fetch error:", err);
     } finally {
       setLoading(false);
@@ -45,28 +51,32 @@ function App() {
         {response && (
           <div className="space-y-6">
             {/* Observations */}
-            <section>
-              <h2 className="text-2xl font-semibold text-indigo-700">🔍 Observations</h2>
-              <div className="grid md:grid-cols-2 gap-4 mt-3">
-                {response.observations.map((obs, idx) => (
-                  <div key={idx} className="p-4 bg-white border-l-4 border-blue-400 rounded-md shadow-sm">
-                    <p className="text-gray-800">{obs}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
+            {response.observations.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-semibold text-indigo-700">🔍 Observations</h2>
+                <div className="grid md:grid-cols-2 gap-4 mt-3">
+                  {response.observations.map((obs, idx) => (
+                    <div key={idx} className="p-4 bg-white border-l-4 border-blue-400 rounded-md shadow-sm">
+                      <p className="text-gray-800">{obs}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Suggestions */}
-            <section>
-              <h2 className="text-2xl font-semibold text-emerald-700">💡 Suggestions</h2>
-              <div className="grid md:grid-cols-2 gap-4 mt-3">
-                {response.suggestions.map((sugg, idx) => (
-                  <div key={idx} className="p-4 bg-white border-l-4 border-green-400 rounded-md shadow-sm">
-                    <p className="text-gray-800">{sugg}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
+            {response.suggestions.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-semibold text-emerald-700">💡 Suggestions</h2>
+                <div className="grid md:grid-cols-2 gap-4 mt-3">
+                  {response.suggestions.map((sugg, idx) => (
+                    <div key={idx} className="p-4 bg-white border-l-4 border-green-400 rounded-md shadow-sm">
+                      <p className="text-gray-800">{sugg}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         )}
       </div>
