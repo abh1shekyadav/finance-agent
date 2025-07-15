@@ -31,16 +31,18 @@ If frontend and backend are in the same repo:
 cd frontend
 npm install
 npm run dev
+```
 
 ⚙️ Backend Integration
 Make sure the FastAPI backend is running on:
 
 ```bash
 http://localhost:8000/ask-ai
+```
 
 The frontend expects a GET response like:
 ```bash
 {
   "response": "```json\n{ \"observations\": [...], \"suggestions\": [...] }\n```"
 }
-
+```
